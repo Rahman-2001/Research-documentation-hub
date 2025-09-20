@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Page{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-center mt-5 mb-5">
+        <div class="d-flex gap-3 flex-column">
+            <h3>Contact Form</h3>
+
+            <form method="post" class="row g-3">
+                {% csrf_token %}
+
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" id="name" name="name" value="{{ form.name.value|default:'' }}">
+                    <div class="invalid-feedback">
+                        {% comment %} {{ form.name.errors }} {% endcomment %}
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" id="email" name="email" value="{{ form.email.value|default:'' }}">
+                    <div class="invalid-feedback">
+                        {% comment %} {{ form.email.errors }} {% endcomment %}
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control {% if form.message.errors %}is-invalid{% endif %}" id="message" name="message" rows="4">{{ form.message.value|default:'' }}</textarea>
+                    <div class="invalid-feedback">
+                        {% comment %} {{ form.message.errors }} {% endcomment %}
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>  
+</div>
+{% endblock %}

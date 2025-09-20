@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Page{% endblock %}
+
+{% block content %}
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-6">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif%}
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+              <h3> Hi, {{user.username}}.</h3>
+          </div>
+          <div class="col d-flex justify-content-end">
+              <div>
+                  <h2>Your Groups:</h2>
+                  <ul>
+                      <li>[GROUP NAME]</li>
+                      <li>You are not a member of any groups.</li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+          <div class="col-6">
+              [ERRORS]
+          </div>
+        </div>
+        <div class="row">
+          <h2 class="mt-3">[TITLE]</h2>
+          <div class="d-flex justify-content-center">
+              <a href="{% url 'blog:new_post' %}" class="btn btn-success">New Post</a>
+          </div>
+        </div>
+        <div class="row m-3">
+
+
+            {% if page_obj %}
+            {% for all_posts in page_obj %}
+                <div class="col-sm-2 col-md-3 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <!-- <img src="{{ post.image.url }}" class="img-fluid"  style="width: 100%;height: 100%;object-fit: cover;aspect-ratio: 2 / 3;" alt="{{ post.title }}"> -->
+                                    <img src="{{ all_posts.img_url }}" class="img-fluid" style="width: 100%;object-fit: cover;aspect-ratio: 1 / 1;" alt="{{ post.title }}">
+                                </div>
+                                <div class="col-md-8">
+                                    <h5 class="card-title">{{ all_posts.title }}</h5>
+                                    <p class="card-text">{{ all_posts.content |truncatewords:15 }}</p>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{% url 'blog:post_detail' slug=all_posts.slug %}">Read More</a>
+                                        <p>{{ all_posts.category.name }}</p>
+                                        <a class="text-decoration-none text-dark fw-bold" href="#">{{ post.category.name | capfirst }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% comment %} pagination Start code {% endcomment %}
+                <div class="col-12 my-3">
+                    {% if page_obj.has_other_pages %}
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination" style="display: flex;justify-content: center;align-items: center;margin: 0;">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1" aria-label="First">
+                                            <span aria-hidden="true">&laquo; first</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                            <span aria-hidden="true">previous</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li class="page-item"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                            <span aria-hidden="true">next</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                            <span aria-hidden="true">last &raquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                    
+                </div>
+            {% comment %} pagination End code {% endcomment %}
+        {% else %}
+            <p>No Post Available</p>
+        {% endif %}
+
+        </div>
+      </div>
+      
+{% endblock %}
